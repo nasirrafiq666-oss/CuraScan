@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CuraScan — AI-Powered Health Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0A1628;
+    --ink:    #1A2B47;
+    --steel:  #2E4A72;
+    --pulse:  #00C2A0;  /* teal-green — the signature accent */
+    --pulse2: #0096FF;  /* electric blue */
+    --fog:    #EFF4FB;
+    --white:  #FFFFFF;
+    --muted:  #6B7F99;
+    --warn:   #FF6B47;
+    --surface:#F7FAFF;
+
+    --ff-display: 'DM Serif Display', Georgia, serif;
+    --ff-body:    'DM Sans', system-ui, sans-serif;
+
+    --r-sm: 8px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --r-xl: 32px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--ff-body);
+    background: var(--white);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 68px;
+    background: rgba(10,22,40,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--ff-display);
+    font-size: 1.4rem;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo .logo-icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--pulse), var(--pulse2));
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.72);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    display: flex; gap: 10px; align-items: center;
+  }
+  .btn-ghost {
+    padding: 8px 18px;
+    border: 1px solid rgba(255,255,255,0.24);
+    border-radius: var(--r-sm);
+    color: var(--white);
+    background: transparent;
+    font-size: 0.875rem;
+    font-family: var(--ff-body);
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
+  .btn-primary {
+    padding: 9px 20px;
+    border: none;
+    border-radius: var(--r-sm);
+    background: linear-gradient(135deg, var(--pulse), var(--pulse2));
+    color: var(--white);
+    font-size: 0.875rem;
+    font-family: var(--ff-body);
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity .2s, transform .15s;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex; align-items: center;
+    padding: 100px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 55% at 70% 50%, rgba(0,194,160,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,150,255,0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  /* Pulse ring animation */
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -10%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,194,160,0.15);
+    animation: pulse-ring 4s ease-in-out infinite;
+  }
+  @keyframes pulse-ring {
+    0%,100%  { transform: translateY(-50%) scale(1);   opacity: .5; }
+    50%      { transform: translateY(-50%) scale(1.06); opacity: 1; }
+  }
+
+  .hero-inner {
+    max-width: 1200px; width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 5px 14px;
+    border-radius: 99px;
+    border: 1px solid rgba(0,194,160,0.35);
+    background: rgba(0,194,160,0.08);
+    color: var(--pulse);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--pulse);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero h1 {
+    font-family: var(--ff-display);
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 22px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    background: linear-gradient(90deg, var(--pulse), var(--pulse2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    color: rgba(255,255,255,0.62);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 440px;
+  }
+  .hero-actions {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+  .btn-hero {
+    padding: 13px 26px;
+    border-radius: var(--r-sm);
+    font-size: 0.95rem;
+    font-family: var(--ff-body);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-hero.solid {
+    background: linear-gradient(135deg, var(--pulse), var(--pulse2));
+    color: var(--white);
+    border: none;
+  }
+  .btn-hero.solid:hover { opacity: 0.88; transform: translateY(-2px); }
+  .btn-hero.outline {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.28);
+  }
+  .btn-hero.outline:hover { background: rgba(255,255,255,0.06); }
+
+  .hero-stats {
+    display: flex; gap: 32px;
+  }
+  .stat { display: flex; flex-direction: column; }
+  .stat-val {
+    font-family: var(--ff-display);
+    font-size: 1.8rem;
+    color: var(--white);
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* scan card */
+  .hero-visual {
+    display: flex; flex-direction: column; gap: 16px;
+    align-items: flex-end;
+  }
+  .scan-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    width: 100%;
+    max-width: 420px;
+    backdrop-filter: blur(8px);
+  }
+  .scan-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .scan-tab {
+    flex: 1; padding: 11px;
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--muted);
+    text-align: center;
+    cursor: pointer;
+    transition: color .2s, background .2s;
+    border: none; background: transparent;
+  }
+  .scan-tab.active {
+    color: var(--pulse);
+    background: rgba(0,194,160,0.08);
+  }
+  .scan-body { padding: 20px; }
+  .scan-image-placeholder {
+    width: 100%;
+    height: 160px;
+    border-radius: var(--r-sm);
+    background: linear-gradient(135deg, #0d2240, #152f50);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .scan-image-placeholder::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(0,194,160,0.12) 100%);
+  }
+  /* ECG-line animation inside scan */
+  .ecg-line {
+    position: absolute;
+    bottom: 16px; left: 0; right: 0;
+    height: 2px;
+    background: transparent;
+    z-index: 1;
+  }
+  .ecg-svg { width: 100%; height: 40px; }
+  .ecg-path {
+    stroke: var(--pulse);
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 300;
+    stroke-dashoffset: 300;
+    animation: draw-ecg 2s linear infinite;
+  }
+  @keyframes draw-ecg {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .ai-result {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(0,194,160,0.07);
+    border: 1px solid rgba(0,194,160,0.2);
+    border-radius: var(--r-sm);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+  }
+  .ai-result-label { font-size: 0.78rem; color: var(--muted); }
+  .ai-result-val { font-size: 0.9rem; font-weight: 600; color: var(--pulse); }
+  .confidence-bar-wrap { margin-top: 8px; }
+  .confidence-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.76rem; color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .confidence-bar {
+    height: 5px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pulse), var(--pulse2));
+    border-radius: 99px;
+    animation: fill-bar 1.2s ease forwards;
+  }
+  @keyframes fill-bar { from { width: 0; } to { width: 92%; } }
+
+  /* floating pill */
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px;
+    background: rgba(0,194,160,0.12);
+    border: 1px solid rgba(0,194,160,0.25);
+    border-radius: 99px;
+    color: var(--pulse);
+    font-size: 0.78rem; font-weight: 500;
+    margin-top: 6px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+  /* ── FEATURES ── */
+  .section { padding: 96px 5%; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-eyebrow {
+    display: inline-block;
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--pulse);
+    margin-bottom: 14px;
+  }
+  .section-heading {
+    font-family: var(--ff-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--navy);
+    margin-bottom: 16px;
+    line-height: 1.15;
+  }
+  .section-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 56px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid rgba(46,74,114,0.10);
+    border-radius: var(--r-lg);
+    padding: 32px 28px;
+    transition: transform .25s, box-shadow .25s, border-color .25s;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,194,160,0.10);
+    border-color: rgba(0,194,160,0.25);
+  }
+  .feature-icon {
+    width: 52px; height: 52px;
+    border-radius: var(--r-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  .feature-icon.teal { background: rgba(0,194,160,0.12); }
+  .feature-icon.blue { background: rgba(0,150,255,0.12); }
+  .feature-icon.warn { background: rgba(255,107,71,0.12); }
+  .feature-card h3 {
+    font-size: 1.05rem; font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .feature-card p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how-section {
+    background: var(--navy);
+    padding: 96px 5%;
+  }
+  .how-section .section-heading { color: var(--white); }
+  .how-section .section-sub { color: rgba(255,255,255,0.5); }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 28px; left: calc(12.5% + 28px); right: calc(12.5% + 28px);
+    height: 1px;
+    background: linear-gradient(90deg, var(--pulse), var(--pulse2));
+    opacity: 0.3;
+  }
+  .step {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    position: relative;
+  }
+  .step-num {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pulse), var(--pulse2));
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1rem;
+    margin-bottom: 20px;
+    position: relative; z-index: 1;
+    box-shadow: 0 0 24px rgba(0,194,160,0.35);
+  }
+  .step h4 {
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .step p {
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.48);
+    line-height: 1.6;
+  }
+
+  /* ── ROLES ── */
+  .roles-section { background: var(--fog); padding: 96px 5%; }
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .role-card {
+    background: var(--white);
+    border-radius: var(--r-xl);
+    padding: 36px 30px;
+    border: 1px solid transparent;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  .role-card:hover {
+    border-color: var(--pulse);
+    box-shadow: 0 8px 36px rgba(0,194,160,0.12);
+  }
+  .role-avatar {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .role-avatar.patient { background: rgba(0,194,160,0.1); }
+  .role-avatar.doctor  { background: rgba(0,150,255,0.1); }
+  .role-avatar.admin   { background: rgba(255,107,71,0.1); }
+  .role-card h3 { font-size: 1.1rem; font-weight: 600; color: var(--navy); margin-bottom: 12px; }
+  .role-card ul {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .role-card ul li {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 0.87rem; color: var(--muted);
+  }
+  .role-card ul li::before {
+    content: '✓';
+    color: var(--pulse);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── TECH STACK ── */
+  .tech-section { padding: 80px 5%; background: var(--white); }
+  .tech-logos {
+    display: flex; flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 48px;
+  }
+  .tech-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px;
+    border-radius: 99px;
+    border: 1px solid rgba(46,74,114,0.15);
+    background: var(--surface);
+    font-size: 0.87rem; font-weight: 500;
+    color: var(--steel);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .tech-chip:hover {
+    border-color: var(--pulse);
+    box-shadow: 0 4px 16px rgba(0,194,160,0.12);
+  }
+  .tech-chip .chip-icon { font-size: 1.1rem; }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-section { background: var(--navy); padding: 96px 5%; }
+  .compare-section .section-heading { color: var(--white); }
+  .compare-section .section-sub { color: rgba(255,255,255,0.5); }
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    margin-top: 48px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .compare-table th, .compare-table td {
+    padding: 16px 20px;
+    font-size: 0.875rem;
+    text-align: center;
+  }
+  .compare-table th {
+    background: rgba(0,194,160,0.08);
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .compare-table th:first-child { text-align: left; }
+  .compare-table td { color: rgba(255,255,255,0.55); border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .compare-table td:first-child { text-align: left; color: rgba(255,255,255,0.8); font-weight: 500; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table th.highlight, .compare-table td.highlight { color: var(--pulse); }
+  .check { color: var(--pulse); font-weight: 700; }
+  .cross { color: rgba(255,255,255,0.22); }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: linear-gradient(135deg, var(--pulse), var(--pulse2));
+    padding: 48px 5%;
+  }
+  .stats-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 32px;
+    text-align: center;
+  }
+  .stat-item { display: flex; flex-direction: column; gap: 6px; }
+  .stat-big {
+    font-family: var(--ff-display);
+    font-size: 2.4rem;
+    color: var(--white);
+  }
+  .stat-desc {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.72);
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 100px 5%;
+    text-align: center;
+    background: var(--fog);
+  }
+  .cta-section h2 {
+    font-family: var(--ff-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  .cta-section p {
+    color: var(--muted);
+    max-width: 460px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+  .cta-actions { display: flex; gap: 12px; justify-content: center; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    padding: 56px 5% 32px;
+  }
+  .footer-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-brand p {
+    font-size: 0.87rem; color: rgba(255,255,255,0.45);
+    line-height: 1.7; margin-top: 12px;
+    max-width: 260px;
+  }
+  .footer-col h4 {
+    font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul li a {
+    font-size: 0.875rem; color: rgba(255,255,255,0.6);
+    text-decoration: none; transition: color .2s;
+  }
+  .footer-col ul li a:hover { color: var(--pulse); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem; color: rgba(255,255,255,0.3);
+  }
+  .footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--pulse); }
+
+  /* ── UTIL ── */
+  .text-center { text-align: center; }
+  .mt-4 { margin-top: 16px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 4%; }
+    .nav-links { display: none; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-visual { align-items: center; }
+    .scan-card { max-width: 100%; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid::before { display: none; }
+    .roles-grid { grid-template-columns: 1fr; }
+    .stats-inner { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 20px; }
+    .stats-inner { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .cta-actions { flex-direction: column; align-items: center; }
+    .compare-table { font-size: 0.78rem; }
+    .compare-table th, .compare-table td { padding: 10px 10px; }
+  }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s, transform .6s; }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-icon">✚</div>
+    CuraScan
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#roles">For You</a></li>
+    <li><a href="#tech">Technology</a></li>
+    <li><a href="#compare">Compare</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn-ghost">Login</button>
+    <button class="btn-primary">Register Free</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        AI-Powered · Secure · Offline-Ready
+      </div>
+      <h1>Smart Scans.<br><em>Safer Lives.</em></h1>
+      <p class="hero-sub">CuraScan uses deep learning to analyze X-rays, MRIs, and CT scans instantly — while verifying medicine authenticity through on-device AI. Healthcare intelligence, anywhere.</p>
+      <div class="hero-actions">
+        <button class="btn-hero solid">Upload a Medical Scan</button>
+        <button class="btn-hero outline">Scan Medicine</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-val">85%+</span>
+          <span class="stat-label">AI Accuracy Target</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val">&lt;15s</span>
+          <span class="stat-label">Scan Analysis Time</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val">3</span>
+          <span class="stat-label">Imaging Modalities</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="scan-card">
+        <div class="scan-tabs">
+          <button class="scan-tab active">X-Ray</button>
+          <button class="scan-tab">MRI</button>
+          <button class="scan-tab">CT Scan</button>
+        </div>
+        <div class="scan-body">
+          <div class="scan-image-placeholder">
+            🫁
+            <div class="ecg-line">
+              <svg class="ecg-svg" viewBox="0 0 300 40">
+                <path class="ecg-path" d="M0,20 L60,20 L70,5 L80,35 L90,10 L100,30 L110,20 L180,20 L190,5 L200,35 L210,10 L220,30 L230,20 L300,20"/>
+              </svg>
+            </div>
+          </div>
+          <div class="ai-result">
+            <div>
+              <div class="ai-result-label">AI Finding</div>
+              <div class="ai-result-val">No Abnormality Detected</div>
+            </div>
+            <div style="font-size:1.4rem;">✅</div>
+          </div>
+          <div class="confidence-bar-wrap">
+            <div class="confidence-bar-label">
+              <span>Confidence Score</span>
+              <span style="color:var(--pulse); font-weight:600;">92%</span>
+            </div>
+            <div class="confidence-bar">
+              <div class="confidence-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="status-pill">🔒 Data encrypted · AES-256</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-inner">
+    <div class="text-center">
+      <span class="section-eyebrow">Core Capabilities</span>
+      <h2 class="section-heading">Built for Real Clinical Needs</h2>
+      <p class="section-sub" style="margin:0 auto 56px;">From automated scan reports to counterfeit drug alerts — CuraScan brings together AI diagnostics and medicine safety in one secure platform.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon teal">🧠</div>
+        <h3>AI Scan Analysis</h3>
+        <p>Convolutional Neural Networks trained on NIH/RSNA datasets detect structural anomalies in X-rays, MRIs, and CT scans with over 85% target accuracy.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon blue">📋</div>
+        <h3>Automated Preliminary Reports</h3>
+        <p>The moment a scan is analyzed, a structured draft report is generated automatically — giving doctors a head start and reducing diagnostic delays.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon teal">💊</div>
+        <h3>OCR Medicine Authentication</h3>
+        <p>Point your camera at any medicine packaging. Google ML Kit reads the label, cross-checks against trusted pharmaceutical databases, and flags counterfeits.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon warn">⚠️</div>
+        <h3>Drug Interaction Alerts</h3>
+        <p>Scan multiple medicines and CuraScan checks for dangerous Drug-Drug Interactions (DDI), displaying safety alerts before harm can occur.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon blue">📶</div>
+        <h3>Offline-First Medicine Checks</h3>
+        <p>Rural and low-connectivity areas are no barrier. Medicine verification runs on-device using a local SQLite database and offline OCR — no internet needed.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon teal">🔐</div>
+        <h3>Role-Based Access Control</h3>
+        <p>Separate secure dashboards for Patients, Doctors, and Administrators ensure that sensitive scan data is only visible to authorized personnel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="section-inner">
+    <div class="text-center">
+      <span class="section-eyebrow" style="color:var(--pulse)">Workflow</span>
+      <h2 class="section-heading">Scan to Report in Four Steps</h2>
+      <p class="section-sub" style="margin:0 auto 64px; color:rgba(255,255,255,0.5)">A seamless pipeline from image upload to doctor-reviewed diagnosis.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h4>Upload Scan</h4>
+        <p>Patient uploads X-ray, MRI, or CT scan image through the mobile app or web portal.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <h4>AI Analysis</h4>
+        <p>The CNN model preprocesses the image, detects anomalies, and generates a confidence score.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <h4>Report Generation</h4>
+        <p>A structured preliminary medical report is auto-generated and securely stored in MongoDB.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">4</div>
+        <h4>Doctor Review</h4>
+        <p>The assigned doctor reviews, annotates, and finalizes the report. Patient is notified instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROLES -->
+<section class="roles-section" id="roles">
+  <div class="section-inner">
+    <span class="section-eyebrow">User Portals</span>
+    <h2 class="section-heading">Designed for Every Role</h2>
+    <p class="section-sub">Three distinct, secure dashboards — tailored to how each user actually works.</p>
+    <div class="roles-grid">
+      <div class="role-card reveal">
+        <div class="role-avatar patient">🧑‍⚕️</div>
+        <h3>Patient</h3>
+        <ul>
+          <li>Upload X-ray, MRI, or CT scans</li>
+          <li>View AI-generated reports and history</li>
+          <li>Scan medicines for authenticity</li>
+          <li>Check drug interaction safety</li>
+          <li>Receive notifications on scan status</li>
+          <li>Download reports as PDF</li>
+        </ul>
+      </div>
+      <div class="role-card reveal">
+        <div class="role-avatar doctor">👨‍💼</div>
+        <h3>Doctor</h3>
+        <ul>
+          <li>Review AI preliminary reports</li>
+          <li>Add comments and clinical insights</li>
+          <li>Approve or request re-analysis</li>
+          <li>Manage patient scan history</li>
+          <li>View patient scan images</li>
+          <li>Finalize and sign-off reports</li>
+        </ul>
+      </div>
+      <div class="role-card reveal">
+        <div class="role-avatar admin">🛡️</div>
+        <h3>Administrator</h3>
+        <ul>
+          <li>Manage all user accounts</li>
+          <li>Monitor system activity and logs</li>
+          <li>Manage medical records and scans</li>
+          <li>Configure system settings</li>
+          <li>Oversee platform usage metrics</li>
+          <li>Ensure data integrity and security</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <span class="stat-big">85%+</span>
+      <span class="stat-desc">CNN Model Accuracy</span>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-big">80%+</span>
+      <span class="stat-desc">OCR Medicine Detection Rate</span>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-big">99%</span>
+      <span class="stat-desc">Target System Uptime</span>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-big">&lt;15s</span>
+      <span class="stat-desc">Per Scan Analysis Time</span>
+    </div>
+  </div>
+</div>
+
+<!-- TECH STACK -->
+<section class="tech-section" id="tech">
+  <div class="section-inner text-center">
+    <span class="section-eyebrow">Technology</span>
+    <h2 class="section-heading">Modern Stack. Proven Tools.</h2>
+    <p class="section-sub" style="margin: 0 auto 8px;">Built with industry-standard frameworks for AI processing, secure backend services, and cross-platform delivery.</p>
+    <div class="tech-logos reveal">
+      <div class="tech-chip"><span class="chip-icon">🐍</span> Python</div>
+      <div class="tech-chip"><span class="chip-icon">🧠</span> TensorFlow</div>
+      <div class="tech-chip"><span class="chip-icon">👁️</span> OpenCV</div>
+      <div class="tech-chip"><span class="chip-icon">📱</span> Flutter</div>
+      <div class="tech-chip"><span class="chip-icon">⚛️</span> React.js</div>
+      <div class="tech-chip"><span class="chip-icon">🟢</span> Node.js</div>
+      <div class="tech-chip"><span class="chip-icon">🍃</span> MongoDB</div>
+      <div class="tech-chip"><span class="chip-icon">🗃️</span> SQLite</div>
+      <div class="tech-chip"><span class="chip-icon">🔍</span> Google ML Kit</div>
+      <div class="tech-chip"><span class="chip-icon">🔥</span> Firebase</div>
+      <div class="tech-chip"><span class="chip-icon">☁️</span> MongoDB Atlas</div>
+      <div class="tech-chip"><span class="chip-icon">🐙</span> GitHub</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="compare-section" id="compare">
+  <div class="section-inner">
+    <div class="text-center">
+      <span class="section-eyebrow" style="color:var(--pulse)">Market Analysis</span>
+      <h2 class="section-heading">Why CuraScan Stands Apart</h2>
+      <p class="section-sub" style="margin:0 auto 8px; color:rgba(255,255,255,0.5)">Existing tools solve part of the problem. CuraScan solves all of it.</p>
+    </div>
+    <table class="compare-table reveal">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>AI Scan Analysis</th>
+          <th>OCR Support</th>
+          <th>Offline Access</th>
+          <th class="highlight">Role-Based Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Medscape</td>
+          <td class="cross">✗</td>
+          <td class="check">✓</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+        </tr>
+        <tr>
+          <td>Drugs.com</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+        </tr>
+        <tr>
+          <td>Ada Health</td>
+          <td class="check">✓</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+          <td>Limited</td>
+        </tr>
+        <tr>
+          <td>Zebra Medical</td>
+          <td class="check">✓</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+        </tr>
+        <tr>
+          <td>Practo</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+          <td class="check">✓</td>
+        </tr>
+        <tr>
+          <td style="color:var(--pulse); font-weight:700;">✚ CuraScan</td>
+          <td class="check highlight">✓</td>
+          <td class="check highlight">✓</td>
+          <td class="check highlight">✓</td>
+          <td class="check highlight">✓</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <span class="section-eyebrow">Get Started</span>
+  <h2>Healthcare Intelligence,<br>Available Now</h2>
+  <p>Join doctors and patients using CuraScan to make faster, safer, more informed healthcare decisions.</p>
+  <div class="cta-actions">
+    <button class="btn-hero solid" style="background:linear-gradient(135deg,#00C2A0,#0096FF); border:none;">Create Free Account</button>
+    <button class="btn-hero outline" style="border:1px solid rgba(10,22,40,0.25); color:var(--navy);">View Documentation</button>
+  </div>
+  <p class="mt-4" style="font-size:0.8rem; color:var(--muted);">University of Lahore · CS & IT Department · Spring 2023–2026</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="color:white; text-decoration:none; display:inline-flex; align-items:center; gap:10px;">
+        <div class="logo-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#00C2A0,#0096FF);border-radius:8px;display:flex;align-items:center;justify-content:center;">✚</div>
+        <span style="font-family:var(--ff-display);font-size:1.2rem;">CuraScan</span>
+      </a>
+      <p>An AI-powered healthcare platform for automated medical scan analysis and medicine authentication. Built by students at The University of Lahore.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="#">Upload Scan</a></li>
+        <li><a href="#">Scan Medicine</a></li>
+        <li><a href="#">View Reports</a></li>
+        <li><a href="#">Drug Interaction</a></li>
+        <li><a href="#">Health Records</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Roles</h4>
+      <ul>
+        <li><a href="#">Patient Portal</a></li>
+        <li><a href="#">Doctor Dashboard</a></li>
+        <li><a href="#">Admin Control</a></li>
+        <li><a href="#">Register Account</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">Technology Stack</a></li>
+        <li><a href="#">Research References</a></li>
+        <li><a href="#">University of Lahore</a></li>
+        <li><a href="#">Project Advisor</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CuraScan · Department of CS &amp; IT, The University of Lahore</span>
+    <span>M. Hur · N. Rafique · M. Shakeel Khan · Advisor: Sir Ali Ilyas</span>
+  </div>
+</footer>
+
+<script>
+  // Scan tab switching
+  document.querySelectorAll('.scan-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.scan-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const icons = { 'X-Ray':'🫁', 'MRI':'🧠', 'CT Scan':'🫀' };
+      const label = tab.textContent.trim();
+      document.querySelector('.scan-image-placeholder').firstChild.textContent = icons[label] || '🫁';
+    });
+  });
+
+  // Scroll reveal
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Animate confidence bar on scroll
+  const barObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animationPlayState = 'running';
+      }
+    });
+  });
+  document.querySelectorAll('.confidence-fill').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    barObserver.observe(el);
+  });
+</script>
+</body>
+</html>
