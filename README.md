@@ -1,2 +1,2 @@
-# index
+# CuraScan
 CuraScan Healthcare Website 
